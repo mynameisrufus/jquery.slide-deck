@@ -191,9 +191,6 @@
                 if (elem.id === active.id) {
                     var next  = self.get(index + 1),
                         first = self.get(0)
-
-                    
-
                     return transition(next || first)
                 }
             })
