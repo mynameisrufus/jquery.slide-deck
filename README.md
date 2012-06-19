@@ -86,11 +86,6 @@ for the CSS transitions.
   </tr>
 </table>
 
-### TODO
-
-The transitions need to be in que as at the moment if you navigate too
-quickly you can be left with no content.
-
 ### Credits
 
 Thanks to [tequila](http://www.tequila.com.au/) for sponsoring the build

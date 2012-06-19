@@ -1,4 +1,18 @@
+/*!
+ * jQuery Slide Deck - CSS3 transition and JS animate siled deck
+ * Copyright(c) 2012 Rufus Post <rufuspost@gmail.com>
+ * MIT Licensed.
+ *
+ * https://github.com/mynameisrufus/jquery.slide-deck.git
+ */
+
 (function($, undefined) {
+    "use strict";
+
+    $.slideDeck = {
+        version: "0.1"
+    }
+
     $.fn.slideDeck = function(options) {
 
         var deck = this
@@ -9,9 +23,8 @@
         var delegate = function() {
             $.fn.transition = $.fn.animate
 
-            var hooks = [['x', 'left'], ['y', 'top']]
-
-            hooks.forEach(function(hook, index) {
+            var registerCssHook = function(index, hook) {
+                console.log(hook)
                 $.fx.step[hook[0]] = function(fx){
                     $.cssHooks[hook[0]].set( fx.elem, fx.now + fx.unit );
                 }
@@ -24,10 +37,11 @@
                         elem.style[hook[1]] = value;
                     }
                 }
-            })
-        }
+            }
 
-        if (!$.support.transition) delegate()
+            var hooks = [['x', 'left'], ['y', 'top']]
+            $.each(hooks, registerCssHook)
+        }
 
         var opts = $.extend(true, {
             easing: { transition: 'ease', animate: 'swing' },
@@ -38,8 +52,8 @@
             zBot: 190
         }, options)
 
+        if (!$.support.transition) delegate()
         var easing = $.support.transition ? opts.easing.transition : opts.easing.animate
-
 
         // Place all slides at the bottom of the stack by default.
         this.css('zIndex', opts.zBot).hide()
@@ -48,7 +62,10 @@
         var active = this[0]
         $(active).css('zIndex', opts.zTopAbs).show()
 
+        var queue = []
+
         var _after = function(elem) {
+            queue.pop(elem)
 
             $(active).css('zIndex', opts.zBot).hide()
             active.scrollTop = 0
@@ -62,6 +79,8 @@
         }
 
         var _before = function(elem) {
+            queue.push(elem)
+
             $(elem).show()
 
             $.event.trigger('outgoing', elem, active)
@@ -166,12 +185,14 @@
         }
 
         var transition = function(elem) {
+            if (queue.length === 1) return
+
+            _before(elem)
+
             var enter = $(elem).data('transition'),
                 exit  = $(active).data('transition'),
                 posel = $(elem).data('position'),
                 posac = $(active).data('position')
-
-            _before(elem)
 
             if (exit === 'vertical') {
                 return transitions.vertical.exit(elem)
