@@ -24,7 +24,6 @@
             $.fn.transition = $.fn.animate
 
             var registerCssHook = function(index, hook) {
-                console.log(hook)
                 $.fx.step[hook[0]] = function(fx){
                     $.cssHooks[hook[0]].set( fx.elem, fx.now + fx.unit );
                 }
@@ -52,8 +51,12 @@
             zBot: 190
         }, options)
 
-        if (!$.support.transition) delegate()
-        var easing = $.support.transition ? opts.easing.transition : opts.easing.animate
+        var easing = opts.easing.transition
+
+        if (!$.support.transition) {
+            delegate()
+            easing = opts.easing.animate
+        }
 
         // Place all slides at the bottom of the stack by default.
         this.css('zIndex', opts.zBot).hide()
@@ -65,7 +68,7 @@
         var queue = []
 
         var _after = function(elem) {
-            queue.pop(elem)
+            queue.pop()
 
             $(active).css('zIndex', opts.zBot).hide()
             active.scrollTop = 0
