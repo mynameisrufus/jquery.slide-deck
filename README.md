@@ -4,7 +4,8 @@ A simple slider that slides horizontal and vertical using CSS
 transitions, if the browser does not support CSS transitions it
 delegates to JS animations so works in almost all browsers.
 
-This lib uses [jquery.transit](http://ricostacruz.com/jquery.transit)
+This lib uses
+[jquery.transit](https://github.com/rstacruz/jquery.transit)
 for the CSS transitions.
 
 ## Options
@@ -16,7 +17,7 @@ for the CSS transitions.
   </tr>
   <tr>
     <td>easing</td>
-    <td>{ trasition: 'ease', animate: 'swing' }</td>
+    <td>{ transition: 'ease', animate: 'swing' }</td>
   </tr>
   <tr>
     <td>speed</td>
